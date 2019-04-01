@@ -11,6 +11,7 @@ class MyApp extends StatelessWidget {
           fit: StackFit.expand,
           children: <Widget>[
             Container(
+              child: Image.asset('assets/logo.png',width:2.0,height:2.0,),
               decoration: BoxDecoration(
                   color: new Color(0xFF43B0F1),
                   gradient: LinearGradient(
