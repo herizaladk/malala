@@ -3,50 +3,91 @@ import 'package:flutter/material.dart';
 class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new Container(
-      alignment: Alignment(0.0, 0.0),
-      decoration: new BoxDecoration(
-        image: new DecorationImage(
-          image: new AssetImage('assets/aftersplash.png'),
-          fit: BoxFit.cover,
-        ),
-      ),
-      child: Container(
-        padding: EdgeInsets.only(top: 20.0),
-        child: new Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              "The New",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20.0,
+    return new Scaffold(
+      body: Stack(
+        children: <Widget>[
+          Container(
+            alignment: Alignment(0.0, 0.0),
+            decoration: new BoxDecoration(
+              image: new DecorationImage(
+                image: new AssetImage('assets/aftersplash.png'),
+                fit: BoxFit.cover,
               ),
             ),
-            Text(
-              "Way to",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20.0,
-              ),
+          ),
+
+          Positioned(
+             bottom: 550,
+             right: 150,
+            child: new Column(
+              children: <Widget>[    
+                  Text(
+                    'The New \n Way to \n Travel ', textAlign: TextAlign.justify,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 48.0,
+                        fontWeight: FontWeight.normal),
+                  ),
+              ],
             ),
-            Text(
-              "Travel",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold),
+          ),
+
+          Positioned(
+            bottom: 200,
+            left:70,
+            child: new Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                  new FlatButton(
+                    shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(30.0)),
+                    color: Colors.blue,
+                    onPressed: () {},
+                    child: new Container(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 20.0,
+                        horizontal:62.0,
+                      ),
+                    child: Text('Create Account',
+                    textAlign:TextAlign.center,
+                    style:TextStyle(
+                      color:Colors.white
+                    ),),
+                    )
+                  ),
+                
+              ],
             ),
-            RaisedButton(
-              onPressed: () {},
-              child: const Text('Create Account'),
+          ),
+
+          Positioned(
+            bottom: 120,
+            left:70,
+            child: new Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                  new FlatButton(
+                    shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(30.0)),
+                    color: Colors.white,
+                    onPressed: () {},
+                    child: new Container(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 20.0,
+                        horizontal:90.0,
+                      ),
+                    child: Text('Sign In',
+                    textAlign:TextAlign.center,
+                    style:TextStyle(
+                      color:Colors.blue
+                    ),),
+                    )
+                  ),
+                
+              ],
             ),
-            RaisedButton(
-              onPressed: () {},
-              child: const Text('Sign In'),
-            ),
-          ],
-        ),
+          )
+        ],
       ),
     );
   }
