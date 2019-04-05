@@ -31,7 +31,7 @@ class SplashScreen extends StatefulWidget {
             color: Colors.black
         ),
         this.image,
-        this.loadingText  = const Text("Malala"),
+        this.loadingText  = const Text(""),
         this.imageBackground,
       	this.gradientBackground
       }
