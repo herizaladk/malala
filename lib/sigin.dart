@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
-class Register extends StatefulWidget {
+class SignIn extends StatefulWidget {
   final Widget child;
 
-  Register({Key key, this.child}) : super(key: key);
+  SignIn({Key key, this.child}) : super(key: key);
 
-  _RegisterState createState() => _RegisterState();
+  _SignInState createState() => _SignInState();
 }
 
-class _RegisterState extends State<Register> {
+class _SignInState extends State<SignIn> {
   @override
-    Widget build(BuildContext context) {
-    return new Scaffold(
+  Widget build(BuildContext context) {
+   return new Scaffold(
       backgroundColor:Colors.lightBlueAccent,
         resizeToAvoidBottomPadding: false,
         body: Column(
@@ -23,7 +23,7 @@ class _RegisterState extends State<Register> {
                     Container(
                       padding: EdgeInsets.fromLTRB(15.0, 110.0, 0.0, 0.0),
                       child: Text(
-                        'Sign Up',
+                        'Sign In',
                         style: TextStyle(
                             fontSize: 80.0, fontWeight: FontWeight.bold,color:Colors.white),
                       ),
@@ -35,18 +35,6 @@ class _RegisterState extends State<Register> {
                   padding: EdgeInsets.only(top: 35.0, left: 20.0, right: 20.0),
                   child: Column(
                     children: <Widget>[
-                      TextField(
-                        decoration: InputDecoration(
-                            labelText: 'Full Name',
-                            labelStyle: TextStyle(
-                                // fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
-                            // hintText: 'EMAIL',
-                            // hintStyle: ,
-                            focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white))),
-                      ),
                       SizedBox(height: 10.0),
                       TextField(
                         decoration: InputDecoration(
@@ -83,7 +71,7 @@ class _RegisterState extends State<Register> {
                               onTap: () {},
                               child: Center(
                                 child: Text(
-                                  'SIGNUP',
+                                  'SIGN IN',
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
@@ -122,5 +110,4 @@ class _RegisterState extends State<Register> {
                   )),
             ]));
   }
-  
 }
