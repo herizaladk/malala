@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1084735918138",
+    "firebase_url": "https://malala-cb9ab.firebaseio.com",
+    "project_id": "malala-cb9ab",
+    "storage_bucket": "malala-cb9ab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1084735918138:android:e189c349b53cb72f",
+        "android_client_info": {
+          "package_name": "com.example.malala"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1084735918138-u965j84dpp7blrmf0c22ldksdrcis9vi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOxR_9oLoRzr8SjEzlLjzjjHF4AZYPies"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1084735918138-u965j84dpp7blrmf0c22ldksdrcis9vi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -83,7 +83,7 @@ class _RegisterState extends State<Register> {
                               onTap: () {},
                               child: Center(
                                 child: Text(
-                                  'SIGNUP',
+                                  'REGISTER',
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,

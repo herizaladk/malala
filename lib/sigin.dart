@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'home.dart';
 
 class SignIn extends StatefulWidget {
-  final Widget child;
 
-  SignIn({Key key, this.child}) : super(key: key);
-
+  @override
   _SignInState createState() => _SignInState();
 }
 
 class _SignInState extends State<SignIn> {
+  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+  String _email, _password;
+
   @override
   Widget build(BuildContext context) {
-   return new Scaffold(
-      backgroundColor:Colors.lightBlueAccent,
+    return new Scaffold(
+        
+        backgroundColor: Colors.lightBlueAccent,
         resizeToAvoidBottomPadding: false,
         body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -25,50 +29,69 @@ class _SignInState extends State<SignIn> {
                       child: Text(
                         'Sign In',
                         style: TextStyle(
-                            fontSize: 80.0, fontWeight: FontWeight.bold,color:Colors.white),
+                            fontSize: 80.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
                       ),
                     ),
                   ],
                 ),
               ),
-              Container(
-                  padding: EdgeInsets.only(top: 35.0, left: 20.0, right: 20.0),
+              Form(
+                key:_formkey,
                   child: Column(
                     children: <Widget>[
                       SizedBox(height: 10.0),
-                      TextField(
-                        decoration: InputDecoration(
-                            labelText: 'Email ',
-                            labelStyle: TextStyle(
-                                // fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
-                            focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white))),
-                        obscureText: false,
+                      Padding(
+                        padding: const EdgeInsets.only(top: 35.0, left: 20.0, right: 20.0),
+                        child: TextFormField(
+                          validator: (input) {
+                            if (input.isEmpty) {
+                              return 'Please type an Email';
+                            }
+                          },
+                          onSaved: (input) => _email = input,
+                          decoration: InputDecoration(
+                              labelText: 'Email ',
+                              labelStyle: TextStyle(
+                                  // fontFamily: 'Montserrat',
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                              focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white))),
+                          obscureText: false,
+                        ),
                       ),
                       SizedBox(height: 10.0),
-                      TextField(
-                        decoration: InputDecoration(
-                            labelText: 'Password ',
-                            labelStyle: TextStyle(
-                                // fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
-                            focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white))),
-                                obscureText: true,
+                      Padding(
+                        padding: const EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
+                        child: TextFormField(
+                          validator: (input) {
+                            if (input.length < 6) {
+                              return 'Password must contains at least 6 characters';
+                            }
+                          },
+                          onSaved: (input) => _password = input,
+                          decoration: InputDecoration(
+                              labelText: 'Password ',
+                              labelStyle: TextStyle(
+                                  // fontFamily: 'Montserrat',
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                              focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white))),
+                          obscureText: true,
+                        ),
                       ),
                       SizedBox(height: 50.0),
                       Container(
                           height: 40.0,
                           child: Material(
                             borderRadius: BorderRadius.circular(20.0),
-                            // shadowColor: Colors.greenAccent,
                             color: Colors.green,
                             elevation: 7.0,
                             child: GestureDetector(
-                              onTap: () {},
+                              onTap: () => signIn(),
                               child: Center(
                                 child: Text(
                                   'SIGN IN',
@@ -99,7 +122,7 @@ class _SignInState extends State<SignIn> {
                             child: Center(
                               child: Text('Go Back',
                                   style: TextStyle(
-                                    color:Colors.white,
+                                      color: Colors.white,
                                       fontWeight: FontWeight.bold,
                                       fontFamily: 'Montserrat')),
                             ),
@@ -109,5 +132,19 @@ class _SignInState extends State<SignIn> {
                     ],
                   )),
             ]));
+  }
+
+  void signIn() async {
+    if (_formkey.currentState.validate()) {
+      _formkey.currentState.save();
+      try {
+        FirebaseUser user = await FirebaseAuth.instance
+            .signInWithEmailAndPassword(email: _email, password: _password);
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Home(user: user)));
+      } catch (e) {
+        print(e.message);
+      }
+    }
   }
 }
