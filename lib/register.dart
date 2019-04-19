@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'sigin.dart';
 
 class Register extends StatefulWidget {
   final Widget child;
@@ -9,6 +11,9 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+  String _email, _password;
+
   @override
     Widget build(BuildContext context) {
     return new Scaffold(
@@ -31,8 +36,9 @@ class _RegisterState extends State<Register> {
                   ],
                 ),
               ),
-              Container(
-                  padding: EdgeInsets.only(top: 35.0, left: 20.0, right: 20.0),
+              Form(
+                key:_formkey,
+                  // padding: EdgeInsets.only(top: 35.0, left: 20.0, right: 20.0),
                   child: Column(
                     children: <Widget>[
                       TextField(
@@ -48,28 +54,45 @@ class _RegisterState extends State<Register> {
                                 borderSide: BorderSide(color: Colors.white))),
                       ),
                       SizedBox(height: 10.0),
-                      TextField(
-                        decoration: InputDecoration(
-                            labelText: 'Email ',
-                            labelStyle: TextStyle(
-                                // fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
-                            focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white))),
-                        obscureText: false,
+                      Padding(
+                        padding: EdgeInsets.only(top: 35.0, left: 20.0, right: 20.0),
+                        child: TextFormField(
+                          validator:(input){
+                            if(input.isEmpty){
+                              return 'Please add an email';
+                            }
+                          },
+                          decoration: InputDecoration(
+                              labelText: 'Email ',
+                              labelStyle: TextStyle(
+                                  // fontFamily: 'Montserrat',
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                              focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white))),
+                          obscureText: false,
+                          onSaved: (input)=>_email=input,
+                        ),
                       ),
                       SizedBox(height: 10.0),
-                      TextField(
-                        decoration: InputDecoration(
-                            labelText: 'Password ',
-                            labelStyle: TextStyle(
-                                // fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
-                            focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white))),
-                                obscureText: true,
+                      Padding(
+                       padding: EdgeInsets.only(top: 35.0, left: 20.0, right: 20.0),
+                        child: TextFormField(
+                          validator:(input){
+                            if (input.length<6)
+                            return 'Password must contains 6 characters';
+                          },
+                          decoration: InputDecoration(
+                              labelText: 'Password ',
+                              labelStyle: TextStyle(
+                                  // fontFamily: 'Montserrat',
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                              focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white))),
+                                  obscureText: true,
+                                  onSaved: (input)=>_password=input,
+                        ),
                       ),
                       SizedBox(height: 50.0),
                       Container(
@@ -80,7 +103,7 @@ class _RegisterState extends State<Register> {
                             color: Colors.green,
                             elevation: 7.0,
                             child: GestureDetector(
-                              onTap: () {},
+                              onTap: () => register(),
                               child: Center(
                                 child: Text(
                                   'REGISTER',
@@ -121,6 +144,18 @@ class _RegisterState extends State<Register> {
                     ],
                   )),
             ]));
+  }
+  void register() async{
+    if (_formkey.currentState.validate()){
+      _formkey.currentState.save();
+      try {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(email:_email,password:_password);
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>SignIn()));
+      }catch(e){
+        print(e.massage);
+      
+      }
+    }
   }
   
 }
