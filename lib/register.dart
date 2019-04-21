@@ -15,9 +15,9 @@ class _RegisterState extends State<Register> {
   String _email, _password;
 
   @override
-    Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
     return new Scaffold(
-      backgroundColor:Colors.lightBlueAccent,
+        backgroundColor: Colors.lightBlueAccent,
         resizeToAvoidBottomPadding: false,
         body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -30,35 +30,46 @@ class _RegisterState extends State<Register> {
                       child: Text(
                         'Sign Up',
                         style: TextStyle(
-                            fontSize: 80.0, fontWeight: FontWeight.bold,color:Colors.white),
+                            fontSize: 80.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
                       ),
                     ),
                   ],
                 ),
               ),
               Form(
-                key:_formkey,
-                  // padding: EdgeInsets.only(top: 35.0, left: 20.0, right: 20.0),
+                  key: _formkey,
                   child: Column(
                     children: <Widget>[
-                      TextField(
-                        decoration: InputDecoration(
-                            labelText: 'Full Name',
-                            labelStyle: TextStyle(
-                                // fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
-                            // hintText: 'EMAIL',
-                            // hintStyle: ,
-                            focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white))),
+                      SizedBox(height: 10.0),
+                      Padding(
+                        padding:
+                            EdgeInsets.only(top: 30.0, left: 20.0, right: 20.0),
+                        child: TextFormField(
+                          validator: (input) {
+                            if (input.isEmpty) {
+                              return 'Please add an username';
+                            }
+                          },
+                          decoration: InputDecoration(
+                              labelText: 'Username ',
+                              labelStyle: TextStyle(
+                                  // fontFamily: 'Montserrat',
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                              focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white))),
+                          obscureText: false,
+                        ),
                       ),
                       SizedBox(height: 10.0),
                       Padding(
-                        padding: EdgeInsets.only(top: 35.0, left: 20.0, right: 20.0),
+                        padding:
+                            EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
                         child: TextFormField(
-                          validator:(input){
-                            if(input.isEmpty){
+                          validator: (input) {
+                            if (input.isEmpty) {
                               return 'Please add an email';
                             }
                           },
@@ -71,16 +82,17 @@ class _RegisterState extends State<Register> {
                               focusedBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(color: Colors.white))),
                           obscureText: false,
-                          onSaved: (input)=>_email=input,
+                          onSaved: (input) => _email = input,
                         ),
                       ),
                       SizedBox(height: 10.0),
                       Padding(
-                       padding: EdgeInsets.only(top: 35.0, left: 20.0, right: 20.0),
+                        padding:
+                            EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
                         child: TextFormField(
-                          validator:(input){
-                            if (input.length<6)
-                            return 'Password must contains 6 characters';
+                          validator: (input) {
+                            if (input.length < 6)
+                              return 'Password must contains 6 characters';
                           },
                           decoration: InputDecoration(
                               labelText: 'Password ',
@@ -90,53 +102,58 @@ class _RegisterState extends State<Register> {
                                   color: Colors.white),
                               focusedBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(color: Colors.white))),
-                                  obscureText: true,
-                                  onSaved: (input)=>_password=input,
+                          obscureText: true,
+                          onSaved: (input) => _password = input,
                         ),
                       ),
-                      SizedBox(height: 50.0),
-                      Container(
-                          height: 40.0,
-                          child: Material(
-                            borderRadius: BorderRadius.circular(20.0),
-                            // shadowColor: Colors.greenAccent,
-                            color: Colors.green,
-                            elevation: 7.0,
-                            child: GestureDetector(
-                              onTap: () => register(),
-                              child: Center(
-                                child: Text(
-                                  'REGISTER',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: 'Montserrat'),
+                      Padding(
+                        padding:  EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
+                        child: Container(
+                            height: 40.0,
+                            child: Material(
+                              borderRadius: BorderRadius.circular(20.0),
+                              // shadowColor: Colors.greenAccent,
+                              color: Colors.green,
+                              elevation: 7.0,
+                              child: GestureDetector(
+                                onTap: () => register(),
+                                child: Center(
+                                  child: Text(
+                                    'REGISTER',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'Montserrat'),
+                                  ),
                                 ),
                               ),
-                            ),
-                          )),
+                            )),
+                      ),
                       SizedBox(height: 20.0),
-                      Container(
-                        height: 40.0,
-                        color: Colors.transparent,
+                      Padding(
+                        padding:  EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
                         child: Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: Colors.white,
-                                  style: BorderStyle.solid,
-                                  width: 1.0),
-                              color: Colors.transparent,
-                              borderRadius: BorderRadius.circular(20.0)),
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: Center(
-                              child: Text('Go Back',
-                                  style: TextStyle(
-                                    color:Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: 'Montserrat')),
+                          height: 40.0,
+                          color: Colors.transparent,
+                          child: Container(
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Colors.white,
+                                    style: BorderStyle.solid,
+                                    width: 1.0),
+                                color: Colors.transparent,
+                                borderRadius: BorderRadius.circular(20.0)),
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Center(
+                                child: Text('Go Back',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'Montserrat')),
+                              ),
                             ),
                           ),
                         ),
@@ -145,17 +162,18 @@ class _RegisterState extends State<Register> {
                   )),
             ]));
   }
-  void register() async{
-    if (_formkey.currentState.validate()){
+
+  void register() async {
+    if (_formkey.currentState.validate()) {
       _formkey.currentState.save();
       try {
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(email:_email,password:_password);
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>SignIn()));
-      }catch(e){
+        await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(email: _email, password: _password);
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => SignIn()));
+      } catch (e) {
         print(e.massage);
-      
       }
     }
   }
-  
 }
