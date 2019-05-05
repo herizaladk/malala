@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'description.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'weather.dart' as weather;
 import 'dart:async';
-
+import 'schedule.dart';
 
 class Home extends StatefulWidget {
   const Home({Key key, this.user}) : super(key: key);
@@ -15,7 +16,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-
   void showStuff() async {
     Map data = await getweather(weather.appId, weather.defaultCity);
     print(data.toString());
@@ -40,14 +40,14 @@ class _HomeState extends State<Home> {
                       fontWeight: FontWeight.bold,
                       color: Colors.white),
                 ),
-                Container(
-                  width: 50.0,
-                  height: 50.0,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.white,
-                  ),
-                )
+                // Container(
+                //   width: 50.0,
+                //   height: 50.0,
+                //   decoration: BoxDecoration(
+                //     shape: BoxShape.circle,
+                //     color: Colors.white,
+                //   ),
+                // )
               ],
             ),
             SizedBox(
@@ -61,29 +61,41 @@ class _HomeState extends State<Home> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            
+
             SizedBox(
               height: 10.0,
             ),
             new Container(
                 margin: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                child: updateTemp('Cileunyi')
-                ),
+                child: updateTemp('Cileunyi')),
             // Text(
             //   '23C',
             //   style: TextStyle(color: Colors.white, fontSize: 30.0),
             // ),
             SizedBox(height: 50.0),
+            // GestureDetector(
+            // onTap: ()=> Desription(),
+            // child:
             Container(
               height: 400,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: <Widget>[
-                  homeWidget(),
-                  homeWidget(),
-                  homeWidget(),
+                  homeWidget(
+                      url: 'assets/dago.jpg',
+                      name: 'Dago Pakar',
+                      loc: 'Dago Street'),
+                  homeWidget(
+                      url: 'assets/bubu.jpg', 
+                      name: 'Bubu Jungle', 
+                      loc: 'ABC'),
+                  homeWidget(
+                      url: 'assets/alun.jpg', 
+                      name: 'Alun-Alun', 
+                      loc: 'AA'),
                 ],
               ),
+              // ),
             ),
           ],
         ),
@@ -94,7 +106,13 @@ class _HomeState extends State<Home> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             IconButton(icon: Icon(Icons.home), onPressed: () => showStuff()),
-            IconButton(icon: Icon(Icons.date_range), onPressed: () {}),
+            IconButton(
+                icon: Icon(Icons.date_range),
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Schedule()));
+                }),
+            IconButton(icon: Icon(Icons.settings), onPressed: () {}),
           ],
         ),
       ),
@@ -102,23 +120,29 @@ class _HomeState extends State<Home> {
     // );
   }
 
-  Widget homeWidget() {
+  Widget homeWidget({@required String url, name, loc}) {
     return Container(
       padding: EdgeInsets.all(10.0),
       width: 250.0,
       height: 400.0,
       child: Stack(
         children: <Widget>[
-          Container(
-            width: 250.0,
-            height: 300.0,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(35.0),
-                    bottomLeft: Radius.circular(35.0),
-                    bottomRight: Radius.circular(35.0)),
-                image: DecorationImage(
-                    image: AssetImage('assets/dago.jpg'), fit: BoxFit.cover)),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => Description()));
+            },
+            child: Container(
+              width: 250.0,
+              height: 300.0,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(35.0),
+                      bottomLeft: Radius.circular(35.0),
+                      bottomRight: Radius.circular(35.0)),
+                  image: DecorationImage(
+                      image: AssetImage(url), fit: BoxFit.cover)),
+            ),
           ),
           // Positioned(
           //   bottom: 1,
@@ -139,7 +163,7 @@ class _HomeState extends State<Home> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text('Dago Pakar',
+                Text(name,
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -149,7 +173,7 @@ class _HomeState extends State<Home> {
                   children: <Widget>[
                     Icon(Icons.location_on, color: Colors.white),
                     Text(
-                      '5KM Away',
+                      loc,
                       style: TextStyle(color: Colors.white),
                     )
                   ],
@@ -181,13 +205,14 @@ class _HomeState extends State<Home> {
               child: new Column(
                 children: <Widget>[
                   new ListTile(
-                    title: new Text(content['main']['temp'].toString(),
-                    style: new TextStyle(
-                      fontStyle: FontStyle.normal,
-                      fontSize:20.0,
-                      color:Colors.white,
-                      fontWeight:FontWeight.w500
-                    ),),
+                    title: new Text(
+                      content['main']['temp'].toString(),
+                      style: new TextStyle(
+                          fontStyle: FontStyle.normal,
+                          fontSize: 20.0,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500),
+                    ),
                   )
                 ],
               ),
