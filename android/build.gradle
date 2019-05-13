@@ -6,11 +6,16 @@ buildscript {
 
     dependencies {
         classpath 'com.android.tools.build:gradle:3.3.0'
-        classpath 'com.google.gms:google-services:4.2.0'
+        classpath 'com.google.gms:google-services:4.2.0' 
     }
 }
 
-allprojects {
+rootProject.allprojects {
+    configurations.all {
+        resolutionStrategy {
+            force 'com.google.firebase:firebase-firestore:18.2.0'
+        }
+    }
     repositories {
         google()
         jcenter()

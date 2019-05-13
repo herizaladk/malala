@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'description.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'weather.dart' as weather;
 import 'dart:async';
 import 'schedule.dart';
+import 'settings.dart';
 
 class Home extends StatefulWidget {
   const Home({Key key, this.user}) : super(key: key);
@@ -20,6 +21,23 @@ class _HomeState extends State<Home> {
     Map data = await getweather(weather.appId, weather.defaultCity);
     print(data.toString());
   }
+
+  Future getPosts() async {
+    var firestore = Firestore.instance;
+    QuerySnapshot qn = await firestore.collection('place').getDocuments();
+    return qn.documents;
+  }
+
+  navigateToDetail(DocumentSnapshot post) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => Description(
+                  post: post,
+                )));
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -40,14 +58,6 @@ class _HomeState extends State<Home> {
                       fontWeight: FontWeight.bold,
                       color: Colors.white),
                 ),
-                // Container(
-                //   width: 50.0,
-                //   height: 50.0,
-                //   decoration: BoxDecoration(
-                //     shape: BoxShape.circle,
-                //     color: Colors.white,
-                //   ),
-                // )
               ],
             ),
             SizedBox(
@@ -68,35 +78,83 @@ class _HomeState extends State<Home> {
             new Container(
                 margin: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
                 child: updateTemp('Cileunyi')),
-            // Text(
-            //   '23C',
-            //   style: TextStyle(color: Colors.white, fontSize: 30.0),
-            // ),
             SizedBox(height: 50.0),
-            // GestureDetector(
-            // onTap: ()=> Desription(),
-            // child:
-            Container(
-              height: 400,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: <Widget>[
-                  homeWidget(
-                      url: 'assets/dago.jpg',
-                      name: 'Dago Pakar',
-                      loc: 'Dago Street'),
-                  homeWidget(
-                      url: 'assets/bubu.jpg', 
-                      name: 'Bubu Jungle', 
-                      loc: 'ABC'),
-                  homeWidget(
-                      url: 'assets/alun.jpg', 
-                      name: 'Alun-Alun', 
-                      loc: 'AA'),
-                ],
-              ),
-              // ),
-            ),
+            FutureBuilder(
+              future: getPosts(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  const Text('Loading...');
+                } else {
+                  return new Container(
+                    width: 400,
+                    height: 400,
+                    child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: snapshot.data.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Container(
+                            padding: EdgeInsets.all(10.0),
+                            width: 250.0,
+                            height: 400.0,
+                            child: Stack(
+                              children: <Widget>[
+                                GestureDetector(
+                                  onTap: () =>
+                                      navigateToDetail(snapshot.data[index]),
+                                  child: Container(
+                                    width: 250.0,
+                                    height: 300.0,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(35.0),
+                                            bottomLeft: Radius.circular(35.0),
+                                            bottomRight: Radius.circular(35.0)),
+                                        image: DecorationImage(
+                                            image: AssetImage(
+                                                snapshot.data[index].data['image']),
+                                            fit: BoxFit.cover)),
+                                  ),
+                                ),
+                                Positioned(
+                                  bottom: 100,
+                                  left: 10,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(snapshot.data[index].data['name'],
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18.0,
+                                          )),
+                                      Row(
+                                        children: <Widget>[
+                                          Icon(Icons.location_on,
+                                              color: Colors.white),
+                                          Text(
+                                            snapshot.data[index].data['address'],
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                          )
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }),
+                  );
+                }
+              },
+            )
           ],
         ),
       ),
@@ -112,80 +170,19 @@ class _HomeState extends State<Home> {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => Schedule()));
                 }),
-            IconButton(icon: Icon(Icons.settings), onPressed: () {}),
+            IconButton(
+                icon: Icon(Icons.settings),
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Settings()));
+                }),
           ],
         ),
       ),
     );
-    // );
   }
 
-  Widget homeWidget({@required String url, name, loc}) {
-    return Container(
-      padding: EdgeInsets.all(10.0),
-      width: 250.0,
-      height: 400.0,
-      child: Stack(
-        children: <Widget>[
-          GestureDetector(
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => Description()));
-            },
-            child: Container(
-              width: 250.0,
-              height: 300.0,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(35.0),
-                      bottomLeft: Radius.circular(35.0),
-                      bottomRight: Radius.circular(35.0)),
-                  image: DecorationImage(
-                      image: AssetImage(url), fit: BoxFit.cover)),
-            ),
-          ),
-          // Positioned(
-          //   bottom: 1,
-          //   right: 5,
-          //   child: FloatingActionButton(
-          //     mini: true,
-          //     backgroundColor: Colors.orange,
-          //     child: Icon(
-          //       Icons.chevron_right,
-          //       color: Colors.white,
-          //     ),
-          //     onPressed: () {},
-          //   ),
-          // ),
-          Positioned(
-            bottom: 100,
-            left: 10,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(name,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18.0,
-                    )),
-                Row(
-                  children: <Widget>[
-                    Icon(Icons.location_on, color: Colors.white),
-                    Text(
-                      loc,
-                      style: TextStyle(color: Colors.white),
-                    )
-                  ],
-                )
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
+  
   Future<Map> getweather(String appId, String city) async {
     String apiUrl =
         'https://api.openweathermap.org/data/2.5/weather?q=$city,id&appid=${weather.appId}&units=metric';
@@ -221,5 +218,88 @@ class _HomeState extends State<Home> {
             return new Container();
           }
         });
+  }
+}
+
+class Description extends StatefulWidget {
+  final DocumentSnapshot post;
+  Description({this.post});
+
+  _DescriptionState createState() => _DescriptionState();
+}
+
+class _DescriptionState extends State<Description> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: Stack(
+      children: <Widget>[
+        description(
+          url: widget.post.data['image'],
+          name: widget.post.data['name'],
+          address: widget.post.data['address'],
+          contact: widget.post.data['call'],
+          hour: widget.post.data['htm'],
+        )
+      ],
+    ));
+  }
+
+  Widget description({@required String url, name, address, contact, hour}) {
+    var screenHeight = MediaQuery.of(context).size.height;
+    return Stack(
+      children: <Widget>[
+        Container(
+          child: Image.asset(
+            url,
+            fit: BoxFit.cover,
+          ),
+          height: screenHeight * 0.5,
+        ),
+        Container(
+          margin: EdgeInsets.only(top: screenHeight * 0.4),
+          child: Material(
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(80.0)),
+            child: Container(
+              padding: EdgeInsets.only(left: 50.0, top: 20.0, bottom: 30.0),
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        name,
+                        style: TextStyle(
+                            fontSize: 20.0,
+                            color: Colors.blue,
+                            fontWeight: FontWeight.w500),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.streetview),
+                    title: Text('Address'),
+                    subtitle: Text(address),
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.call),
+                    title: Text('Contact'),
+                    subtitle: Text(contact),
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.access_time),
+                    title: Text('Operation Hour'),
+                    subtitle: Text(hour),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
