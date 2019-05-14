@@ -51,13 +51,13 @@ class _HomeState extends State<Home> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text(
-                  'Hello Jhon!',
-                  style: TextStyle(
-                      fontSize: 24.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
-                ),
+                // Text(
+                //   'Hello Jhon!',
+                //   style: TextStyle(
+                //       fontSize: 24.0,
+                //       fontWeight: FontWeight.bold,
+                //       color: Colors.white),
+                // ),
               ],
             ),
             SizedBox(
@@ -75,10 +75,26 @@ class _HomeState extends State<Home> {
             SizedBox(
               height: 10.0,
             ),
+            
             new Container(
                 margin: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
                 child: updateTemp('Cileunyi')),
-            SizedBox(height: 50.0),
+
+            
+            SizedBox(
+              height: 20.0,
+            ),
+
+            Text(
+              'Rekomendasi',
+              style: TextStyle(
+                color:Colors.white,
+                fontSize:24.0,
+                fontWeight:FontWeight.bold,
+                 ),
+              ),
+
+            SizedBox(height:30.0),
             FutureBuilder(
               future: getPosts(),
               builder: (context, snapshot) {
@@ -239,7 +255,7 @@ class _DescriptionState extends State<Description> {
           name: widget.post.data['name'],
           address: widget.post.data['address'],
           contact: widget.post.data['call'],
-          hour: widget.post.data['htm'],
+          hour: widget.post.data['hour'],
         )
       ],
     ));

@@ -55,9 +55,14 @@ flutter:
    - assets/splash.png
    - assets/login.png
    - assets/aftersplash.png
-   - assets/alun.jpg
-   - assets/dago.jpg
-   - assets/bubu.jpg
+   - assets/mru.jpg
+   - assets/kirpay.jpg
+   - assets/cincin.jpg
+   - assets/ss.jpg
+   - assets/loji.jpg
+  #  - assets/alun.jpg
+  #  - assets/dago.jpg
+  #  - assets/bubu.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.

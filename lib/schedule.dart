@@ -48,7 +48,7 @@ class _ScheduleState extends State<Schedule> {
         crossAxisAlignment:CrossAxisAlignment.center,
         children: <Widget>[
           new Text(
-            'My Tasks',
+            'Schedule',
             style:TextStyle (fontSize:34.0,
             color:Colors.white,
             fontWeight:FontWeight.w600
